@@ -1,0 +1,23 @@
+{
+  "name": "cat-photobook",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "serve -l 5000",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "serve": "^11.3.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jemizem/cat-photobook.git"
+  },
+  "author": "jiminkim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jemizem/cat-photobook/issues"
+  },
+  "homepage": "https://github.com/jemizem/cat-photobook#readme"
+}
