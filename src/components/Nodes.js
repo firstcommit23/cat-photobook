@@ -26,7 +26,7 @@ export default function Nodes({$app, initialState, onClick, onBackClick}) {
     // 현재 상태(this.state) 기준으로 렌더링 합니다.
     this.render = () => {
         if (this.state.nodes) {
-            const nodesTemplate = this.state.nodes.map(node => {
+            const nodesTemplate = this.state.nodes?.map(node => {
                 const iconPath = node.type === 'FILE' ? './assets/file.png' : './assets/directory.png'
 
                 return `
@@ -49,7 +49,7 @@ export default function Nodes({$app, initialState, onClick, onBackClick}) {
                     this.onBackClick()
                 }
     
-                const selectedNode = this.state.nodes.find(node => node.id === nodeId)
+                const selectedNode = this.state.nodes?.find(node => node.id === nodeId)
     
                 if (selectedNode) {
                     this.onClick(selectedNode)

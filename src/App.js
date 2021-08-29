@@ -22,7 +22,7 @@ export default function App($app) {
     })
 
     const nodes = new Nodes({
-        $app,
+        $app,        
         initialState: {
             isRoot: this.state.isRoot,
             nodes: this.state.nodes
@@ -32,13 +32,25 @@ export default function App($app) {
         onClick: async (node) => {
             try {
                 if (node.type === 'DIRECTORY') {
-                    const nextNodes = await request(node.id)
-                    this.setState({
-                        ...this.state,
-                        depth: [...this.state.depth, node],
-                        isRoot: false,
-                        nodes: nextNodes
-                    })
+                    if(cache[node.id]) {
+                        //const nextNodes = await request(node.id)
+                        this.setState({
+                            ...this.state,
+                            depth: [...this.state.depth, node],
+                            isRoot: false,
+                            nodes: cache[node.id]
+                        })
+                    } else {
+                        const nextNodes = await request(node.id)
+                        this.setState({
+                            ...this.state,
+                            depth: [...this.state.depth, node],
+                            isRoot: false,
+                            nodes: nextNodes
+                        })
+                        // cache update
+                        cache[node.id] = nextNodes
+                    }
                 } else if (node.type === 'FILE') {
                     this.setState({
                         ...this.state,
@@ -50,7 +62,7 @@ export default function App($app) {
                     
             }
         },
-        onBackClick: async () => {
+        onBackClick: () => {
             try {
                 // 이전 state를 복사하여 처리
                 const nextState = { ...this.state }
@@ -60,19 +72,18 @@ export default function App($app) {
 
                 // root로 온 경우이므로 root 처리
                 if (prevNodeId === null) {
-                    const rootNodes = await request();
+                    //const rootNodes = await request();
                     this.setState({
                         ...nextState,
                         isRoot: true,
-                        nodes: rootNodes
+                        nodes: cache.rootNodes
                     })
                 } else {
-                    const prevNodes = await request(prevNodeId)
-
+                 //   const prevNodes = await request(prevNodeId)
                     this.setState({
-                        ...nextNodes,
+                        ...nextState,
                         isRoot: false,
-                        nodes: prevNodes,
+                        nodes: cache[prevNodeId],
                     })
                 }
             } catch (e) {
@@ -111,6 +122,9 @@ export default function App($app) {
                 isRoot: true,
                 nodes: rootNodes
             })
+
+            // 캐시에 추가
+            cache.rootNodes = rootNodes
         } catch (e) {
             // 에러 처리하기
         } finally {
