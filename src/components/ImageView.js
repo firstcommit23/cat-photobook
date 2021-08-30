@@ -1,10 +1,11 @@
 const IMAGE_PATH_PREFIX = 'https://fe-dev-matching-2021-03-serverlessdeploymentbuck-t3kpj3way537.s3.ap-northeast-2.amazonaws.com/public'
 
-export default function ImageView({ $app, initialState }) {
+export default function ImageView({ $app, initialState, onClick }) {
     // image url
     this.state = initialState
     this.$target = document.createElement('div')
     this.$target.className = 'Modal ImageView'
+    this.onClick = onClick
 
     $app.appendChild(this.$target)
 
@@ -18,6 +19,11 @@ export default function ImageView({ $app, initialState }) {
         
         this.$target.style.display = this.state ? 'block' : 'none'
     }
+
+    // document 를 누른 경우 display 변경하기
+    this.$target.addEventListener("click", e => {
+        this.onClick(e)
+    })
 
     this.render()
 }

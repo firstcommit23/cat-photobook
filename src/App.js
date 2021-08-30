@@ -94,7 +94,15 @@ export default function App($app) {
 
     const imageView = new ImageView({
         $app,
-        initialState: this.state.selectedFilePath
+        initialState: this.state.selectedFilePath,
+        onClick: e => {
+            if (e.target.nodeName !== "IMG") {
+                this.setState({
+                    ...this.state,
+                    selectedFilePath: ''
+                })
+            }
+        }
     })
 
     const loading = new Loading({$app, initialState: this.state.isLoading})
@@ -136,4 +144,15 @@ export default function App($app) {
     }
 
     init()
+
+    // ESC 누른경우 모달 닫기
+    document.addEventListener("keyup", e => {
+        if (this.state.selectedFilePath !== '' && e.key === "Escape") {
+
+            this.setState({
+                ...this.state,
+                selectedFilePath: ''
+            })
+        }
+    })
 }
