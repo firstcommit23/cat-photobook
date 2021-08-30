@@ -46,6 +46,7 @@
   
   .Breadcrumb > div {
     padding: 4px;
+    cursor: pointer;
   }
   
   .Breadcrumb > div::after {

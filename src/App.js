@@ -18,7 +18,31 @@ export default function App($app) {
 
     const breadcrumb = new Breadcrumb({
         $app,
-        initialState: this.state.depth
+        initialState: this.state.depth,
+        onClick: (index) => {
+
+            // root directory
+            if (!index) {
+                this.setState({
+                    ...this.state,
+                    isRoot: true,
+                    depth: [],
+                    nodes: cache.rootNodes,
+                })
+                return
+            }
+
+            const targetIndex = this.state.depth.findIndex(item => item.id === index)
+            if (index === targetIndex) return
+
+            this.setState({
+                ...this.state,
+                isRoot: false,
+                depth: [...this.state.depth.slice(0, targetIndex + 1)],
+                nodes: cache[index],
+            })
+            
+        }
     })
 
     const nodes = new Nodes({
